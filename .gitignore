@@ -2,4 +2,3 @@ data.csv
 go.mod
 go.sum
 *.ttf
-heatmaps_deps/*.jpeg
