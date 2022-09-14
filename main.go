@@ -110,6 +110,9 @@ func getStartAndEndDate(week int, year int) (week_start string, week_end string)
 }
 
 // return incidence for a given week and age class
+
+// This function calculates incidency if not present in datafile
+/*
 func getIncidence(semaine string, annee string, age string, dept string, dataptr *[]Entry) int {
 	pourcentmille := 0
 	valeursemaine := ""
@@ -133,8 +136,30 @@ func getIncidence(semaine string, annee string, age string, dept string, dataptr
 	}
 	return pourcentmille
 }
+*/
+
+func getIncidence(semaine string, annee string, age string, dept string, dataptr *[]Entry) int {
+	valeursemaine := ""
+	incidence := 0
+	if StrToInt(semaine) > 9 {
+		valeursemaine = annee + "-S" + semaine
+	} else {
+		valeursemaine = annee + "-S0" + semaine
+	}
+	if len(dept) == 1 {
+		dept = "0" + dept
+	}
+	for _, ele := range *dataptr {
+		if (ele.semaine == valeursemaine) && (ele.clage == age) && (ele.dep == dept) {
+			incidence = ele.ti
+			break
+		}
+	}
+	return incidence
+}
 
 // return total incidence for a given week and age class
+
 func getIncidenceTotale(semaine string, annee string, dept string, dataptr *[]Entry) int {
 	pourcentmille := 0
 	valeursemaine := ""
@@ -524,21 +549,17 @@ func main() {
 
 	// read csv file line by line
 	scanner := bufio.NewScanner(f)
-	skipfirstline := 0
 	for scanner.Scan() {
 		line := scanner.Text()
-		if skipfirstline == 1 {
-			rec := strings.Split(line, ";")
-			linesize := len(rec)
+		rec := strings.Split(line, ";")
+		linesize := len(rec)
 
-			if linesize > 9 {
-				// Upload datas in slice
-				entree := Entry{rec[0], rec[1], rec[2], rec[3], StrToInt(rec[4]), StrToInt(rec[5]), StrToInt(rec[6]), StrToInt(rec[7]), StrToInt(rec[8]), StrToInt(rec[9])}
-				data = append(data, entree)
-			}
-		} else {
-			skipfirstline = 1
+		if (linesize > 9) && (rec[0] != "dep") {
+			// Upload datas in slice
+			entree := Entry{rec[0], rec[1], rec[2], rec[3], StrToInt(rec[4]), StrToInt(rec[5]), StrToInt(rec[6]), StrToInt(rec[7]), StrToInt(rec[8]), StrToInt(rec[9])}
+			data = append(data, entree)
 		}
+
 	}
 
 	// create heatmaps
@@ -546,7 +567,7 @@ func main() {
 		"21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39",
 		"40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59",
 		"60", "61", "62", "63", "64", "65", "66", "67", "68", "69", "70", "71", "72", "73", "74", "75", "76", "77", "78", "79",
-		"80", "81", "82", "83", "84", "85", "86", "87", "88", "89", "90", "91", "92", "93", "94", "95"}
+		"80", "81", "82", "83", "84", "85", "86", "87", "88", "89", "90", "91", "92", "93", "94", "95", "2A", "2B", "971", "972", "973", "974", "976"}
 
 	for _, selecteddpt := range departements {
 		fmt.Printf("Creating heatmap for departement %s \n", selecteddpt)
