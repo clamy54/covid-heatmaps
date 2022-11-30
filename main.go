@@ -504,7 +504,7 @@ func createHeatmap(dept string, dataptr *[]Entry) {
 		posx = posx + 64
 
 	}
-	im.StringFT(black, font, 16, 0, posx+20, posy+50, "+ 90 ans")
+	im.StringFT(black, font, 16, 0, posx+20, posy+50, "Tous les âges")
 
 	im.Jpeg(nomfichierjpg, 95)
 }
