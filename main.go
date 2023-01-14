@@ -283,7 +283,7 @@ func createHeatmap(dept string, dataptr *[]Entry) {
 		startyear = currentYear
 	} else {
 		startyear = currentYear - 1
-		startweek = 52 - (32 - currentWeekNumber)
+		startweek = 53 - (32 - currentWeekNumber)
 	}
 
 	// Construct abscissa
