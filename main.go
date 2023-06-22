@@ -213,7 +213,7 @@ func dessineBox(imptr *gd.Image, posx int, posy int, incidence int) {
 		indexincidence = 800
 	}
 
-	gety := 790 - int(indexincidence*560/800)
+	gety := 789 - int(indexincidence*559/800)
 	rgb := im.ColorAt(50, gety)
 
 	red = int((rgb >> 16) & 0xFF)
